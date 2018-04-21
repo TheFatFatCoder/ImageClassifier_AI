@@ -35,10 +35,14 @@ public class BayesClassifier {
     double[] sevenSTDEV;
     double[] eightSTDEV;
     double[] nineSTDEV;
+    int totalCounter = 0;
+    int[] classCounter = new int[10];
+    double[] priorProbability = new double[10];
     
     public BayesClassifier(ArrayList<Data> testData, ArrayList<Data> trainData){
         ArrayList<ArrayList<Data>> population = new DataClassifier(trainData).getData(); //population is classified trainData
         for (int h = 0; h < 10; h++) {
+            classCounter[h] = 0;
             double[] sum = new double[DATA_LENGTH];
             for (int i = 0; i < DATA_LENGTH; i++) {
                 sum[i] = 0;
@@ -48,6 +52,8 @@ public class BayesClassifier {
                 for (int j = 0; j < DATA_LENGTH; j++) {
                     sum[j] += population.get(h).get(i).getData()[j];
                 }
+                classCounter[h]++;
+                totalCounter++;
             }
             
             double[] tempAvg = new double[DATA_LENGTH];
@@ -103,7 +109,14 @@ public class BayesClassifier {
             }
         }
         
-        for (int i = 0; i < testData.size(); i++) {
+        System.out.println("Total Data : "+totalCounter);
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Counter Data For Label "+i+" is "+classCounter[i]);
+        }
+        
+        System.out.println("================================================================");
+        System.out.println("Bayes Calculation Starts:\n");
+        for (int i = 0; i < testData.size(); i++) { //test_data can only use 783 (DATA_LENGTH-1)
             
         }
     }
