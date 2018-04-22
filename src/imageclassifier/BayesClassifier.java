@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class BayesClassifier {
     private final int DATA_LENGTH = 784;
+    private final double pi = 22/7;
+    private final double e = 2.718281828;
     //Average Handling
     double[] zeroAverage;
     double[] oneAverage;
