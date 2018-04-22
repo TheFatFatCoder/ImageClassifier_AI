@@ -112,6 +112,7 @@ public class BayesClassifier {
         System.out.println("Total Data : "+totalCounter);
         for (int i = 0; i < 10; i++) {
             System.out.println("Counter Data For Label "+i+" is "+classCounter[i]);
+            priorProbability[i] = classCounter[i]/totalCounter;
         }
         
         System.out.println("================================================================");
