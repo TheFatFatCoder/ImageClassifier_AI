@@ -9,12 +9,10 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Steven
+ * @author john
  */
 public class BayesClassifier {
-    private final int DATA_LENGTH = 784;
     private final double pi = 22/7;
-    private final double e = 2.718281828;
     //Average Handling
     double[] zeroAverage;
     double[] oneAverage;
@@ -37,90 +35,202 @@ public class BayesClassifier {
     double[] sevenSTDEV;
     double[] eightSTDEV;
     double[] nineSTDEV;
-    int totalCounter = 0;
-    int[] classCounter = new int[10];
-    double[] priorProbability = new double[10];
+    //Prior Probability Handling
+    double[] prior = new double[10];
+    int counter = 0;
     
-    public BayesClassifier(ArrayList<Data> testData, ArrayList<Data> trainData){
-        ArrayList<ArrayList<Data>> population = new DataClassifier(trainData).getData(); //population is classified trainData
-        for (int h = 0; h < 10; h++) {
-            classCounter[h] = 0;
-            double[] sum = new double[DATA_LENGTH];
-            for (int i = 0; i < DATA_LENGTH; i++) {
-                sum[i] = 0;
+    public BayesClassifier(ArrayList<Data> trainSet){
+        ArrayList<ArrayList<Data>> population = new DataClassifier(trainSet).getData();
+        
+        //Calculate Average
+        for (int i = 0; i < population.size(); i++) {
+            //Calculate Average for i category (i is max of 10)
+            double[] sum = new double[784];
+            double[] average = new double[784];
+            //Initialise sum[]
+            for (int j = 0; j < 784; j++) {
+                sum[j] = 0;
             }
-            
-            for (int i = 0; i < population.get(h).size(); i++) {
-                for (int j = 0; j < DATA_LENGTH; j++) {
-                    sum[j] += population.get(h).get(i).getData()[j];
+            for (int j = 0; j < population.get(i).size(); j++) { //get data inside each category
+                for (int k = 0; k < 784; k++) {
+                    sum[k] += (double) population.get(i).get(j).getData()[k];
                 }
-                classCounter[h]++;
-                totalCounter++;
-            }
-            
-            double[] tempAvg = new double[DATA_LENGTH];
-            double[] sumDiffFromMean = new double[DATA_LENGTH];
-            for (int i = 0; i < DATA_LENGTH; i++) {
-                sumDiffFromMean[i] = 0;
-                tempAvg[i] = sum[i]/population.get(h).size();
-            }
-            System.out.println("Average Label "+h+" Calculated");
-            for (int i = 0; i < population.get(h).size(); i++) {
-                for (int j = 0; j < DATA_LENGTH; j++) {
-                    sumDiffFromMean[j] += (population.get(h).get(i).getData()[j] - tempAvg[j]);
+                counter++;
+                for (int k = 0; k < 784; k++) {
+                    average[k] = (double) sum[k]/population.get(i).size();
                 }
             }
             
-            double[] tempSTDEV = new double[DATA_LENGTH];
-            for (int i = 0; i < DATA_LENGTH; i++) {
-                tempSTDEV[i] = Math.sqrt(Math.pow(sumDiffFromMean[i],2)/(population.get(h).size()-1));
+            switch (i){
+                case 0 : this.zeroAverage = average;
+                        break;
+                case 1 : this.oneAverage = average;
+                        break;
+                case 2 : this.twoAverage = average;
+                        break;
+                case 3 : this.threeAverage = average;
+                        break;
+                case 4 : this.fourAverage = average;
+                        break;
+                case 5 : this.fiveAverage = average;
+                        break;
+                case 6 : this.sixAverage = average;
+                        break;
+                case 7 : this.sevenAverage = average;
+                        break;
+                case 8 : this.eightAverage = average;
+                        break;
+                case 9 : this.nineAverage = average;
+                        break;
+                default: break;
             }
-            System.out.println("STDEV Label "+h+" Calculated");
-            switch  (h){
-                case 0: zeroAverage = tempAvg;
-                        zeroSTDEV = tempSTDEV;
+            
+            double[] stdev = new double[784];
+            double[] sumDiffFromMean = new double[784];
+            //Initial sumDiffFromMean
+            for (int j = 0; j < 784; j++) {
+                sumDiffFromMean[j] = 0;
+            }
+            for (int j = 0; j < population.get(i).size(); j++) {
+                for (int k = 0; k < 784; k++) {
+                    sumDiffFromMean[k] += Math.pow((population.get(i).get(j).getData()[k]-average[k]),2);
+                }
+                for (int k = 0; k < 784; k++) {
+                    stdev[k] = Math.sqrt(sumDiffFromMean[k]/(population.get(i).size()-1));
+                }
+            }
+            switch (i){
+                case 0 : this.zeroSTDEV = stdev;
                         break;
-                case 1: oneAverage = tempAvg;
-                        oneSTDEV = tempSTDEV;
+                case 1 : this.oneSTDEV = stdev;
                         break;
-                case 2: twoAverage = tempAvg;
-                        twoSTDEV = tempSTDEV;
+                case 2 : this.twoSTDEV = stdev;
                         break;
-                case 3: threeAverage = tempAvg;
-                        threeSTDEV = tempSTDEV;
+                case 3 : this.threeSTDEV = stdev;
                         break;
-                case 4: fourAverage = tempAvg;
-                        fourSTDEV = tempSTDEV;
+                case 4 : this.fourSTDEV = stdev;
                         break;
-                case 5: fiveAverage = tempAvg;
-                        fiveSTDEV = tempSTDEV;
+                case 5 : this.fiveSTDEV = stdev;
                         break;
-                case 6: sixAverage = tempAvg;
-                        sixSTDEV = tempSTDEV;
+                case 6 : this.sixSTDEV = stdev;
                         break;
-                case 7: sevenAverage = tempAvg;
-                        sevenSTDEV = tempSTDEV;
+                case 7 : this.sevenSTDEV = stdev;
                         break;
-                case 8: eightAverage = tempAvg;
-                        eightSTDEV = tempSTDEV;
+                case 8 : this.eightSTDEV = stdev;
                         break;
-                case 9: nineAverage = tempAvg;
-                        nineSTDEV = tempSTDEV;
+                case 9 : this.nineSTDEV = stdev;
                         break;
                 default: break;
             }
         }
+        //Calculate prior probability
+        for (int i = 0; i < population.size(); i++) {
+            prior[i] = (double) population.get(i).size()/counter;
+        }
         
-        System.out.println("Total Data : "+totalCounter);
+        for (int i = 0; i < 784; i++) {
+            //System.out.println(zeroSTDEV[i]+" ");
+            //System.out.println(zeroAverage[i]+" ");
+        }
+        System.out.println();
+        
+    }
+    
+    public int calculateTestSet(Data testData){
+        System.out.println("Bayes Calculation Starts:\n=========================================");
+        double[] testValues = testData.getData();
+        
+        ArrayList<Double> posteriorProbability = new ArrayList<Double>();
+        double posterior = 0;
         for (int i = 0; i < 10; i++) {
-            System.out.println("Counter Data For Label "+i+" is "+classCounter[i]);
-            priorProbability[i] = classCounter[i]/totalCounter;
+            posterior = 0;
+            double[] likelihood = new double[784];
+            for (int j = 0; j <784; j++) {
+                //System.out.println(testValues.length);
+                switch(i){
+                    case 0 :if (zeroSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-zeroAverage[j]), 2))/(2*zeroSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(zeroSTDEV[j], 2)));
+                            }
+                            break;
+                    case 1 :if (oneSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-oneAverage[j]), 2))/(2*oneSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(oneSTDEV[j], 2)));
+                            }
+                            break;
+                    case 2 :if (twoSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-twoAverage[j]), 2))/(2*twoSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(twoSTDEV[j], 2)));
+                            }
+                            break;
+                    case 3 : if (threeSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-threeAverage[j]), 2))/(2*threeSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(threeSTDEV[j], 2)));
+                            }
+                            break;
+                    case 4 :if (fourSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-fourAverage[j]), 2))/(2*fourSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(fourSTDEV[j], 2)));
+                            }
+                            break;
+                    case 5 :if (fiveSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-fiveAverage[j]), 2))/(2*fiveSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(fiveSTDEV[j], 2)));
+                            }
+                            break;
+                    case 6 :if (sixSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-sixAverage[j]), 2))/(2*sixSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(sixSTDEV[j], 2)));
+                            }
+                            break;      
+                    case 7 :if (sevenSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-sevenAverage[j]), 2))/(2*sevenSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(sevenSTDEV[j], 2)));
+                            }
+                            break;
+                    case 8 :if (eightSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-eightAverage[j]), 2))/(2*eightSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(eightSTDEV[j], 2)));
+                            }
+                            break;
+                    case 9: if (nineSTDEV[j]==0) {
+                                likelihood[j] = 0;
+                            }else{
+                                likelihood[j] = (double) -(Math.pow((testValues[j]-nineAverage[j]), 2))/(2*nineSTDEV[j])-(0.5*Math.log(2*pi))-(0.5*Math.log(Math.pow(nineSTDEV[j], 2)));
+                            }
+                            break;
+                    default: break;
+                }
+                for (int k = 0; k < 784; k++) {                    
+                    posterior += likelihood[k] + Math.log(prior[i]);
+                    //System.out.println("Likelihood "+likelihood[j] );
+                }
+                
+            }   
+            posteriorProbability.add(posterior);
         }
-        
-        System.out.println("================================================================");
-        System.out.println("Bayes Calculation Starts:\n");
-        for (int i = 0; i < testData.size(); i++) { //test_data can only use 783 (DATA_LENGTH-1)
-            
+        //Find max posterior
+        int index = 0;
+        double max = 0;
+        //System.out.println("Posterior Probability Size "+posteriorProbability.size());
+        for (int i = 0; i < posteriorProbability.size(); i++) {
+            if (i==0) {
+                index = 0;
+                max = posteriorProbability.get(i);
+            }else if (posteriorProbability.get(i)>max) {
+                index = i;
+                max = posteriorProbability.get(i);
+            }
         }
+        return index;
     }
 }
