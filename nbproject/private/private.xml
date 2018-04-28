@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/ImageClassifier.java</file>
-            <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/Data.java</file>
-            <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/CalculateEuclidean.java</file>
+            <file>file:/C:/Users/Steven/Documents/NetBeansProjects/ImageClassifier_AI/src/imageclassifier/BayesClassifier.java</file>
+            <file>file:/C:/Users/Steven/Documents/NetBeansProjects/ImageClassifier_AI/src/imageclassifier/CalculateEuclidean.java</file>
+            <file>file:/C:/Users/Steven/Documents/NetBeansProjects/ImageClassifier_AI/src/imageclassifier/ReadCSV.java</file>
+            <file>file:/C:/Users/Steven/Documents/NetBeansProjects/ImageClassifier_AI/src/imageclassifier/DataClassifier.java</file>
+            <file>file:/C:/Users/Steven/Documents/NetBeansProjects/ImageClassifier_AI/src/imageclassifier/Data.java</file>
+            <file>file:/C:/Users/Steven/Documents/NetBeansProjects/ImageClassifier_AI/src/imageclassifier/ImageClassifier.java</file>
         </group>
     </open-files>
 </project-private>
