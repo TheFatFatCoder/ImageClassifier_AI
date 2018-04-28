@@ -31,7 +31,6 @@ public class CalculateEuclidean {
                    index = i;
             }
         }
-        //System.out.println("Index - "+index);
         return wholeSet.get(index);
     }
     
