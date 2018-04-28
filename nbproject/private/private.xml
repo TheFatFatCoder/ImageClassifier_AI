@@ -4,7 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/ImageClassifier.java</file>
+            <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/DataClassifier.java</file>
             <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/Data.java</file>
+            <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/BayesClassifier.java</file>
             <file>file:/home/john/Desktop/kClassifier/ImageClassifier/src/imageclassifier/CalculateEuclidean.java</file>
         </group>
     </open-files>

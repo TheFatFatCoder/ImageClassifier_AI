@@ -26,7 +26,7 @@ public class DataClassifier {
     private double[] mean = new double[10];
     
     public DataClassifier(ArrayList<Data> data){
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getData()[784] == 0) {
                 zero.add(data.get(i));
             }
@@ -77,12 +77,6 @@ public class DataClassifier {
         population.add(seven);
         population.add(eight);
         population.add(nine);
-        
-        for (int i = 0; i < population.size(); i++) {
-            for (int j = 0; j < population.get(i).size(); j++) {
-                
-            }
-        }
     }
     
     public ArrayList getData(){

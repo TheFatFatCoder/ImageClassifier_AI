@@ -18,9 +18,27 @@ public class ImageClassifier {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+       
         ArrayList<Data> trainSet = new ReadCSV("/home/john/Desktop/kClassifier/ImageClassifier/train_data.csv").getCSVList(); //60000
         ArrayList<Data> testSet = new ReadCSV("/home/john/Desktop/kClassifier/ImageClassifier/test_data.csv").getCSVList(); //10000
-   
+        
+        int errorCounter = 0;
+        int[][] confusionTable = new int[10][10];
+        
+        BayesClassifier bayes = new BayesClassifier(trainSet);
+        for (int i = 0; i < testSet.size(); i++) {
+            int set = bayes.calculateTestSet(testSet.get(i));
+            int actual = (int) testSet.get(i).getData()[784];
+            System.out.println(set+" || Actual Data: "+actual);
+            
+            if (set!=testSet.get(i).getData()[784]) {
+                errorCounter++;
+            }
+        }
+        System.out.println("Error Count "+errorCounter);
+    }
+    
+    private void runEuclidean(ArrayList<Data> testSet, ArrayList<Data> trainSet){
         int errorCount = 0;
         for (int j = 0; j < testSet.size(); j++) {
             Data result = CalculateEuclidean.calculate(testSet.get(j), trainSet);
@@ -30,12 +48,6 @@ public class ImageClassifier {
             }
         }
         System.out.println("Error Percentage /% : "+(errorCount/testSet.size())*100);
-   
-        //Data result = CalculateEuclidean.calculate(testSet.get(20), trainSet);
-        //System.out.println("Result Set : "+testSet.get(20).getData()[784] + " || Actual Set: "+ trainSet.get(20).getData()[784]);
-        
-        //Data result = CalculateEuclidean.calculate(testSet.get(1), trainSet);
-        //System.out.println("Result Set : "+testSet.get(1).getData()[784] + " || Actual Set: "+ trainSet.get(1).getData()[784]);
+        System.out.println("Total Error : "+errorCount);
     }
-    
 }

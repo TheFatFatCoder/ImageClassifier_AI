@@ -96,7 +96,7 @@ public class BayesClassifier {
                     sumDiffFromMean[k] += Math.pow((population.get(i).get(j).getData()[k]-average[k]),2);
                 }
                 for (int k = 0; k < 784; k++) {
-                    stdev[k] = Math.sqrt(sumDiffFromMean[k]/(population.get(i).size()-1));
+                    stdev[k] = Math.sqrt(sumDiffFromMean[k]/((population.get(i).size()-1)));
                 }
             }
             switch (i){
@@ -124,14 +124,17 @@ public class BayesClassifier {
             }
         }
         //Calculate prior probability
+        //double sum = 0;
         for (int i = 0; i < population.size(); i++) {
             prior[i] = (double) population.get(i).size()/counter;
+            System.out.println("Prior of "+i+" is "+prior[i]);
+            //sum+= prior[i];
         }
-        
-        for (int i = 0; i < 784; i++) {
+        //System.out.println("Total : "+sum);
+        //for (int i = 0; i < 784; i++) {
             //System.out.println(zeroSTDEV[i]+" ");
             //System.out.println(zeroAverage[i]+" ");
-        }
+        //}
         System.out.println();
         
     }
